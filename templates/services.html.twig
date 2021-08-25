@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% include 'components/nav.html.twig' with {'title': 'Services list'} %}
+
+    <div class="services-container">
+        {{ form_start(form) }}
+            <div class="d--f jc--sb ai--c w--500">
+                <div class="mt--30 d--fc w--200">
+                    {{ form_label(form.title, '', {'label_attr': {'class': 'mb--10'}}) }}
+                    {% if form_errors(form.title) %}
+                        {{ form_widget(form.title, {'attr': {'class': 'input--text input--error'}}) }}
+                    {% else %}
+                        {{ form_widget(form.title, {'attr': {'class': 'input--text'}}) }}
+                    {% endif %}
+                    <div class="errors">{{ form_errors(form.title) }}</div>
+                </div>
+                <div class="mt--30 d--fc w--100">
+                    {{ form_label(form.price, '', {'label_attr': {'class': 'mb--10'}}) }}
+                    {% if form_errors(form.price) %}
+                        {{ form_widget(form.price, {'attr': {'class': 'input--text input--error'}}) }}
+                    {% else %}
+                        {{ form_widget(form.price, {'attr': {'class': 'input--text'}}) }}
+                    {% endif %}
+                    <div class="errors">{{ form_errors(form.price) }}</div>
+                </div>
+
+                <div class="mt--30 d--fc w--100">
+                    {{ form_label(form.duration, '', {'label_attr': {'class': 'mb--10'}}) }}
+                    {% if form_errors(form.duration) %}
+                        {{ form_widget(form.duration, {'attr': {'class': 'input--text input--error'}}) }}
+                    {% else %}
+                        {{ form_widget(form.duration, {'attr': {'class': 'input--text'}}) }}
+                    {% endif %}
+                    <div class="errors">{{ form_errors(form.duration) }}</div>
+                </div>
+            </div>
+
+            <div class="mt--30 d--fc w--500">
+                {{ form_label(form.description, '', {'label_attr': {'class': 'mb--10'}}) }}
+                {% if form_errors(form.description) %}
+                    {{ form_widget(form.description, {'attr': {'class': 'input--textarea input--error'}}) }}
+                {% else %}
+                    {{ form_widget(form.description, {'attr': {'class': 'input--textarea'}}) }}
+                {% endif %}
+                <div class="errors">{{ form_errors(form.description) }}</div>
+            </div>
+
+            <div class="mt--30 d--fc w--200">
+                {{ form_label(form.submit, '', {'label_attr': {'class': 'mb--10'}}) }}
+                {{ form_widget(form.submit, {'attr': {'class': 'input--submit'}}) }}
+            </div>
+
+            <input type="hidden" value="" name="id" />
+        {{ form_end(form) }}
+
+        <div class="services d--fc ai--c jc--fs">
+            <div class="hr mt--50"></div>
+            {% for service in services %}
+                <div class="service mt--50">
+                    <div class="d--f ai--c">
+                        <h2>{{ service.title }}</h2>
+                        <form method="post">
+                            <input type="hidden" value="{{ service.id }}" name="id" />
+                            <button class="delete" name="delete" value="delete">Delete</button>
+                        </form>
+                    </div>
+                    <div class="d--fc ai--fs w--200">
+                        <h3 class="mt--10 fw--700">£{{ service.price }}</h3>
+                        <h3 class="mt--10 fw--400">{{ service.duration }} minutes</h3>
+                    </div>
+                    <p class="mt--20">{{ service.description }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

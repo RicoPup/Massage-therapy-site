@@ -1,0 +1,113 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% include 'components/nav.html.twig' with {'title': 'Therapists'} %}
+
+    <div class="therapists-container">
+        <div class="mt--20">
+            <h1>New Therapist</h1>
+        </div>
+        {{ form_start(form) }}
+            <div class="d--fc jc--sb w--500">
+                <div class="mt--30 d--fc w--300">
+                    {{ form_label(form.name, '', {'label_attr': {'class': 'mb--10'}}) }}
+                    {% if form_errors(form.name) %}
+                        {{ form_widget(form.name, {'attr': {'class': 'input--text input--error'}}) }}
+                    {% else %}
+                        {{ form_widget(form.name, {'attr': {'class': 'input--text'}}) }}
+                    {% endif %}
+                    <div class="errors">{{ form_errors(form.name) }}</div>
+                </div>
+            </div>
+
+            <div class="d--fc w--500 mt--20">
+                {{ form_label(form.bio, '', {'label_attr': {'class': 'mb--10'}}) }}
+                {% if form_errors(form.bio) %}
+                    {{ form_widget(form.bio, {'attr': {'class': 'input--textarea input--error'}}) }}
+                {% else %}
+                    {{ form_widget(form.bio, {'attr': {'class': 'input--textarea'}}) }}
+                {% endif %}
+                <div class="errors">{{ form_errors(form.bio) }}</div>
+            </div>
+
+            <div class="d--fc w--f mt--20 input--radio">
+                {{ form_label(form.services, '', {'label_attr': {'class': ' mb--10'}}) }}
+                {% if form_errors(form.services) %}
+                    {{ form_widget(form.services, {'attr': {'class': 'input--error'}}) }}
+                {% else %}
+                    {{ form_widget(form.services, {'attr': {'class': ''}}) }}
+                {% endif %}
+                <div class="errors">{{ form_errors(form.services) }}</div>
+            </div>
+
+            <div class="d--fc w--f mt--20 input--days" data-controller="days">
+                {{ form_label(form.days, '', {'label_attr': {'class': ' mb--10'}}) }}
+                {% if form_errors(form.days) %}
+                    {{ form_widget(form.days, {'attr': {'class': 'input--error'}}) }}
+                {% else %}
+                    {{ form_widget(form.days, {'attr': {'class': 'd--f jc--se w--1000 ai--c'}}) }}
+                {% endif %}
+                <div class="errors">{{ form_errors(form.days) }}</div>
+            </div>
+
+            <div class="d--f jc--se w--1000 mt--20 ai--c">
+                {% for i in range(1,5) %}
+                   <div class="d--fc ai--c w--100 therapist_days_{{ i - 1 }} inactive">
+                       <label for="startTime[{{ i }}]">Start time</label>
+                       <select disabled id="startTime[{{ i }}]" name="startTime[{{ i }}]">
+                            {% for time in times %}
+                                <option value="{{ time }}">{{ time }}</option>
+                           {% endfor %}
+                       </select>
+                        <br />
+                       <label for="endTime[{{ i }}]">End time</label>
+                       <select disabled id="endTime[{{ i }}]" name="endTime[{{ i }}]">
+                            {% for time in times %}
+                                <option value="{{ time }}">{{ time }}</option>
+                            {% endfor %}
+                       </select>
+                   </div>
+                {% endfor %}
+            </div>
+
+            <div class="mt--30 d--fc w--200 ">
+                {{ form_label(form.submit, '', {'label_attr': {'class': 'mb--10'}}) }}
+                {{ form_widget(form.submit, {'attr': {'class': 'input--submit'}}) }}
+            </div>
+
+            <input type="hidden" value="" name="id" />
+        {{ form_end(form) }}
+
+        <div class="therapists d--fc ai--c jc--fs">
+            <div class="hr mt--50"></div>
+            <div class="therapists-title mt--20">
+                <h1>Therapists</h1>
+            </div>
+
+            {% for therapist in therapists %}
+                <div class="therapist mt--50">
+                    <div class="d--f ai--c">
+                        <h2>{{ therapist.name }}</h2>
+                        <form method="post">
+                            <input type="hidden" value="{{ therapist.id }}" name="id" />
+                            <button class="delete" name="delete" value="delete">Delete</button>
+                        </form>
+                    </div>
+                    <p class="fw--500">Bio: </p>
+                    <p class="bio-box mt--20">{{ therapist.bio }}</p>
+                    <div class="mt--20">
+                        <p class="fw--500 mb--10">Services offered: </p>
+                        {% for service in therapist.services %}
+                            <p>{{ service.title }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="mt--20">
+                        <p class="fw--500 mb--10">Working Days:</p>
+                        {% for day in therapist.days %}
+                            <p>{{ constant('App\\Form\\TherapistType::DAYS')[day['day']] }}: {{ day['startTime'] }} - {{ day['endTime'] }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

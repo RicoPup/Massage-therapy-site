@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+   <div class="login-background"></div>
+    <div class="login-container">
+        <h1 class="mb--50">Linklaters Massage</h1>
+
+        <div class="login">
+            <form method="post">
+
+                <div class="title d--f jc--sb ai--fe">
+                    <h2>Login</h2>
+                    <p>or <a class="link" href="{{ path('register') }}">Register</a></p>
+                </div>
+
+                {% if error %}
+                    <div class="errors">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+
+                <div class="mt--30 d--fc">
+                    <label for="inputEmail">Email</label>
+                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="input-login--text" required autofocus>
+                </div>
+
+                <div class="mt--30 d--fc">
+                    <label for="inputPassword">Password</label>
+                    <input type="password" name="password" id="inputPassword" class="input-login--text" required>
+                </div>
+
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" >
+
+                <button class="mt--30 input-login--submit" type="submit">
+                    Log in
+                </button>
+            </form>
+            <a class="link mt--20" href="{{ path('resetPassword') }}">
+                Forgotten your password?
+            </a>
+        </div>
+    </div>
+
+
+{% endblock %}

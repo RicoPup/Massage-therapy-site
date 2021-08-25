@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% include 'components/nav.html.twig' with {'title': 'Welcome back, ' ~ app.user.firstName}%}
+
+    <div class="calendar-container d--fc mt--20">
+        <div class="calendar-row d--f jc--se">
+            {% for i, date in dates %}
+
+                    {% if date.dayOfWeek == 'Sat' or date.dayOfWeek == 'Sun' %}
+                        {% if i < 7 %}
+                            <div>
+                                <h2 class="day-of-week">{{ date.dayOfWeek }}</h2>
+                        {% endif %}
+                        <div class="weekend day--inactive">
+                            <h2>{{ date.day }}</h2>
+                        </div>
+                        {% if i < 7 %}
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        {% if i < 7 %}
+                            <div>
+                                <h2 class="day-of-week">{{ date.dayOfWeek }}</h2>
+                        {% endif %}
+                        <a href="{% if date.therapist %}{{ path('bookings', {'date': date.date}) }}{% endif %}">
+                            <div class="day d--fc {% if not date.therapist %} day--inactive {% endif %}">
+                                <div class="top-of-cal d--f ai--fe">
+                                    <h2>{{ date.day }}</h2>
+                                    {% if date.therapist %}
+                                        <h3>{% if date.therapist %}{{ date.therapist.name }}{% else %}NA{% endif %}</h3>
+                                        <p>{{ date.startTime }} - {{ date.endTime }}</p>
+                                    {% endif %}
+                                </div>
+                                <div class="line"></div>
+                                <div class="bottom-of-cal d--fc">
+                                    {% if date.therapist and date.orders|length > 0 %}
+                                        <p>Your bookings:</p>
+                                        <div class="bookings">
+                                            {% for order in date.orders %}
+                                                <div class="d--f">
+                                                    <p>{{ order.dateTime.format('H:i') }} - {{ order.dateTime.modify('+' ~ order.duration ~ ' minutes').format('H:i') }}</p>
+                                                    {% if order.status == constant('App\\Entity\\Order::STATUS_BOOKED') %}
+                                                        <div class="indicator indicator--booked"></div>
+                                                    {% elseif order.status == constant('App\\Entity\\Order::STATUS_RESERVED') %}
+                                                        <div class="indicator indicator--reserved"></div>
+                                                    {% elseif order.status == constant('App\\Entity\\Order::STATUS_CANCELLED') %}
+                                                        <div class="indicator indicator--cancelled"></div>
+                                                    {% endif %}
+                                                </div>
+                                            {% else %}
+                                                <p>N/A</p>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </a>
+                        {% if i < 7 %}
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                {% if (i + 1) % 7 == 0 %}
+                    </div>
+                    <div class="calendar-row d--f jc--se">
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        {% if bookings|length > 0 %}
+            <div class="mt--30 d--fc">
+                <h2 class="mb--20">My Bookings</h2>
+
+                {% for booking in bookings %}
+                    <a href="{{ path('bookings', {'date': booking.dateTime.format('Y-m-d')} ) }}">
+                        <div class="booking d--f jc--fs">
+                            <h3 class="mr--20 fw--500">{{ booking.dateTime.format('d M Y H:i') }}</h3>
+                            <p class="mr--20 fw--300">{{ booking.title }}</p>
+                            <p class="mr--20 fw--300">{{ booking.duration }} minutes</p>
+                            <p class="mr--20 fw--300">£{{ booking.price }}</p>
+                        </div>
+                    </a>
+                    <div class="hr"></div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

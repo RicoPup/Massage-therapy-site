@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="login-background"></div>
+    <div class="login-container">
+        <h1 class="mb--50">Linklaters Massage</h1>
+        <div class="login">
+            <div class="title d--f jc--sb ai--fe">
+                <h2>Register</h2>
+                <p>or <a class="link" href="{{ path('login') }}">Login</a></p>
+            </div>
+            {{ form_start(form) }}
+
+            <div class="mt--30 d--fc">
+                {{ form_label(form.firstName, '', {'label_attr': {'class': 'mb--10'}}) }}
+                {% if form_errors(form.firstName) %}
+                    {{ form_widget(form.firstName, {'attr': {'class': 'input-login--text input-login--error'}}) }}
+                {% else %}
+                    {{ form_widget(form.firstName, {'attr': {'class': 'input-login--text'}}) }}
+                {% endif %}
+                <div class="errors">{{ form_errors(form.firstName) }}</div>
+            </div>
+
+            <div class="mt--30 d--fc">
+                {{ form_label(form.lastName, '', {'label_attr': {'class': 'mb--10'}}) }}
+                {% if form_errors(form.lastName) %}
+                    {{ form_widget(form.lastName, {'attr': {'class': 'input-login--text input-login--error'}}) }}
+                {% else %}
+                    {{ form_widget(form.lastName, {'attr': {'class': 'input-login--text'}}) }}
+                {% endif %}
+                <div class="errors">{{ form_errors(form.lastName) }}</div>
+            </div>
+
+            <div class="mt--30 d--fc">
+                {{ form_label(form.email, '', {'label_attr': {'class': 'mb--10'}}) }}
+                {% if form_errors(form.email) %}
+                    {{ form_widget(form.email, {'attr': {'class': 'input-login--text input-login--error'}}) }}
+                {% else %}
+                    {{ form_widget(form.email, {'attr': {'class': 'input-login--text'}}) }}
+                {% endif %}
+                <div class="errors">{{ form_errors(form.email) }}</div>
+            </div>
+
+            <div class="mt--30 d--fc">
+                {{ form_label(form.password.first, '', {'label_attr': {'class': 'mb--10'}}) }}
+                {% if form_errors(form.password.first) %}
+                    {{ form_widget(form.password.first, {'attr': {'class': 'input-login--text input-login--error'}}) }}
+                {% else %}
+                    {{ form_widget(form.password.first, {'attr': {'class': 'input-login--text'}}) }}
+                {% endif %}
+                <div class="errors">{{ form_errors(form.password.first) }}</div>
+            </div>
+
+            <div class="mt--30 d--fc">
+                {{ form_label(form.password.second, '', {'label_attr': {'class': 'mb--10'}}) }}
+                {% if form_errors(form.password.second) %}
+                    {{ form_widget(form.password.second, {'attr': {'class': 'input-login--text input-login--error'}}) }}
+                {% else %}
+                    {{ form_widget(form.password.second, {'attr': {'class': 'input-login--text'}}) }}
+                {% endif %}
+                <div class="errors">{{ form_errors(form.password.second) }}</div>
+            </div>
+
+            {{ form_row(form.submit, { 'label': 'Register', 'attr': {'class': 'input-login--submit mt--30'} }) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock %}

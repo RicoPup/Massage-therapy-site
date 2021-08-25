@@ -1,0 +1,44 @@
+@import "fonts"
+@import "settings"
+@import "utils"
+@import "components/inputs"
+@import "components/nav"
+@import "login"
+@import "calendar"
+@import "services"
+@import "bookings"
+@import "therapists"
+
+*
+  padding: 0
+  margin: 0
+  box-sizing: border-box
+  font-family: "Segoe UI", sans-serif
+  font-weight: 200
+  font-style: normal
+  outline: none
+  border: none
+  text-decoration: none
+
+.login-background
+  background: linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) ), url('../images/login-background.jpg')
+  height: 100%
+  width: 100%
+  background-position: 50% 15%
+  background-repeat: no-repeat
+  background-size: cover
+  position: absolute
+  z-index: -1
+
+.login-container
+  padding-top: 50px
+  margin-left: 100px
+
+  h1
+    font-weight: 500
+    color: #FFFFFF
+    font-size: 42.5px
+
+.services-container
+  width: 1200px
+  margin: auto

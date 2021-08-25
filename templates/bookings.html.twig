@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    {% include 'components/nav.html.twig' with {'title': 'Welcome back, ' ~ app.user.firstName}%}
+
+    <div class="booking-container">
+        <div>
+            <br />
+            <h1>{{ date }}</h1>
+            <h2>{{ therapist }}</h2>
+            <br />
+            <p>Select an available time slot and then select the service that you would like with your therapist. You can see all your bookings at the bottom of the <a href="{{ path('calendar') }}" class="c--brand">calendar page</a></p>
+        </div>
+        <div class="d--f jc--sb">
+            <div class="time-container d--fc" data-controller="booking">
+                <div class="title">
+                    <h2>Select a time</h2>
+                </div>
+                <div class="times">
+                    {% set o = 0 %}
+                    {% for i, time in times %}
+                        {% if time.order is not defined or (time.order is defined and o != time.order.id) %}
+                            <div class="time d--f jc--sb ai--c {% if time.status == constant('App\\Entity\\Order::STATUS_UNAVAILABLE') %}time--unavailable{% elseif time.status == constant('App\\Entity\\Order::STATUS_BOOKED') %}time--booked{% endif %}" id="{{ i }}" data-value="{{ time.time }}">
+                                <div id="time" class="{% if time.status == constant('App\\Entity\\Order::STATUS_UNAVAILABLE') %}time--inactive{% endif %}">
+                                    <p>{{ time.time }}</p>
+                                </div>
+                                <div>
+                                    {% if time.order is defined %}
+                                        {% set o = time.order.id %}
+                                        {% if time.order.user == app.user %}
+                                            <p>{{ time.order.title }}</p>
+                                        {% endif %}
+                                    {% elseif time.status == constant('App\\Entity\\Order::STATUS_UNAVAILABLE') %}
+
+                                    {% else %}
+                                        <p>Available</p>
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    {% if time.status == constant('App\\Entity\\Order::STATUS_BOOKED')%}
+                                        <form method="post">
+                                            <input type="hidden" name="cancel-id" value="{{ time.order.id }}">
+                                            <input type="submit" name="cancel" class="cancel input--cancel" value="Cancel">
+                                        </form>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="services-container d--fc">
+                <form method="post">
+                    <div class="d--fc">
+                        <h2>Details</h2>
+                        <input class="hidden" type="time" name="time" id="time-input"/>
+                        <label for="service">Service</label>
+                        <select name="service" id="service" required disabled>
+                            {% for service in services %}
+                                <option value="{{ service.id }}" data-duration="{{ service.duration }}" data-title="{{ service.title }}" data-price="{{ service.price }}">{{ service.title }}: {{ service.duration }}m - £{{ service.price }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="line"></div>
+                    <div class="summary">
+                        <h3>Summary</h3>
+                    </div>
+                    <div class="d--fc list" id="summary-container">
+                        <p>{{ date }}</p>
+                        <p>{{ therapist }}</p>
+                        <p id="time"></p>
+                        <p id="duration"></p>
+                        <p id="title"></p>
+                        <p id="price"></p>
+
+                    </div>
+                    <div>
+                        <input type="submit" name="submit" class="input--submit disabled" value="Book" disabled/>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

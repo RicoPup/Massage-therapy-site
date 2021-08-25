@@ -1,0 +1,73 @@
+.therapists-container
+  margin: 0 auto
+  width: 1200px
+
+  .input--radio
+
+    label
+      margin-right: 30px
+      margin-left: 5px
+
+      &:nth-child(1)
+        margin-left: 0
+
+  .input--days
+    text-align: center
+
+    label
+      width: 100px
+      padding: 5px
+
+      &:hover
+        background: $light-grey
+        cursor: pointer
+
+    .active
+      background: $brand
+      color: white
+
+      &:hover
+        background: rgba($brand, 0.7)
+        cursor: pointer
+
+  .inactive
+
+
+    label
+      opacity: 0.3
+
+    &:hover
+      cursor: default
+
+.therapists
+  width: 100%
+
+  .therapists-title
+    width: 100%
+
+  .delete
+    margin-bottom: 20px
+
+  h2
+    margin-bottom: 20px
+
+  .bio-box
+    width: 100%
+    padding: 10px 0px
+
+  .hr
+    width: 80%
+    height: 2px
+    background: $light-grey
+
+  .therapist
+    width: 100%
+
+    .delete
+      color: $brand
+      background: none
+      margin-left: 10px
+
+      &:hover
+        cursor: pointer
+        text-decoration: underline
